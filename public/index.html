@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Play chess online with friends. Secure accounts, timed games, and real-time multiplayer.">
+  <title>Chess Arena — Play Online</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ============ AUTH SCREEN ============ -->
+  <div id="auth-screen" class="screen active">
+    <div class="auth-container">
+      <div class="logo-section">
+        <div class="logo-icon">♔</div>
+        <h1 class="logo-text">Chess <span class="accent">Arena</span></h1>
+        <p class="tagline">Real-time multiplayer chess</p>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div id="login-form" class="auth-card glass-panel">
+        <h2>Welcome Back</h2>
+        <div class="input-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" placeholder="your@email.com" autocomplete="email">
+        </div>
+        <div class="input-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Enter password" autocomplete="current-password">
+        </div>
+        <button id="btn-login" class="btn btn-primary btn-full">Sign In</button>
+        <div id="login-error" class="error-msg hidden"></div>
+        <div class="auth-links">
+          <a href="#" id="show-forgot" class="auth-link">Forgot Password?</a>
+        </div>
+
+        <div class="auth-divider"><span>or</span></div>
+
+        <!-- Google Sign-In Button -->
+        <div id="google-btn-container" class="google-btn-wrapper">
+          <div id="g_id_onload" data-callback="handleGoogleLogin" data-auto_prompt="false"></div>
+          <button id="btn-google-signin" class="btn btn-google btn-full" type="button">
+            <svg class="google-icon" viewBox="0 0 24 24" width="18" height="18">
+              <path
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"
+                fill="#4285F4" />
+              <path
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                fill="#34A853" />
+              <path
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                fill="#FBBC05" />
+              <path
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                fill="#EA4335" />
+            </svg>
+            Sign in with Google
+          </button>
+        </div>
+
+        <p class="auth-switch">Don't have an account? <a href="#" id="show-signup">Sign Up</a></p>
+      </div>
+
+      <!-- SIGNUP FORM -->
+      <div id="signup-form" class="auth-card glass-panel hidden">
+        <h2>Create Account</h2>
+        <div class="input-group">
+          <label for="signup-username">Username</label>
+          <input type="text" id="signup-username" placeholder="Choose a username" maxlength="20"
+            autocomplete="username">
+        </div>
+        <div class="input-group">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" placeholder="your@email.com" autocomplete="email">
+        </div>
+        <div class="input-group">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" placeholder="Min 6 chars, upper+lower+number"
+            autocomplete="new-password">
+          <div class="password-strength" id="password-strength"></div>
+        </div>
+        <button id="btn-signup" class="btn btn-primary btn-full">Create Account</button>
+        <div id="signup-error" class="error-msg hidden"></div>
+
+        <div class="auth-divider"><span>or</span></div>
+        <button id="btn-google-signup" class="btn btn-google btn-full" type="button">
+          <svg class="google-icon" viewBox="0 0 24 24" width="18" height="18">
+            <path
+              d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"
+              fill="#4285F4" />
+            <path
+              d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+              fill="#34A853" />
+            <path
+              d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+              fill="#FBBC05" />
+            <path
+              d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+              fill="#EA4335" />
+          </svg>
+          Sign up with Google
+        </button>
+
+        <p class="auth-switch">Already have an account? <a href="#" id="show-login">Sign In</a></p>
+      </div>
+
+      <!-- EMAIL VERIFICATION FORM -->
+      <div id="verify-form" class="auth-card glass-panel hidden">
+        <div class="verify-icon">📧</div>
+        <h2>Verify Your Email</h2>
+        <p class="verify-subtitle">We sent a 6-digit code to <strong id="verify-email-display"></strong></p>
+        <div class="input-group">
+          <label for="verify-code">Verification Code</label>
+          <input type="text" id="verify-code" placeholder="000000" maxlength="6" class="code-input"
+            autocomplete="one-time-code">
+        </div>
+        <button id="btn-verify" class="btn btn-primary btn-full">Verify</button>
+        <div id="verify-error" class="error-msg hidden"></div>
+        <div id="dev-code-display" class="dev-code hidden">
+          <span class="label">Dev Mode Code:</span>
+          <span id="dev-code-value" class="code-value"></span>
+        </div>
+        <div id="email-preview-link" class="email-preview hidden">
+          <span>📧 Email sent!</span>
+          <a id="email-preview-url" href="#" target="_blank" class="preview-link">View your email →</a>
+        </div>
+        <div class="verify-actions">
+          <button id="btn-resend-code" class="btn btn-ghost btn-sm">Resend Code</button>
+          <button id="btn-back-to-login" class="btn btn-ghost btn-sm">← Back</button>
+        </div>
+      </div>
+
+      <!-- FORGOT PASSWORD FORM -->
+      <div id="forgot-form" class="auth-card glass-panel hidden">
+        <div class="verify-icon">🔑</div>
+        <h2>Forgot Password</h2>
+        <p class="verify-subtitle" id="forgot-subtitle">Enter your email and we'll send a reset code.</p>
+
+        <div id="forgot-step-1">
+          <div class="input-group">
+            <label for="forgot-email">Email</label>
+            <input type="email" id="forgot-email" placeholder="your@email.com" autocomplete="email">
+          </div>
+          <button id="btn-send-reset" class="btn btn-primary btn-full">Send Reset Code</button>
+          <div id="forgot-error" class="error-msg hidden"></div>
+          <div id="forgot-dev-code" class="dev-code hidden">
+            <span class="label">Dev Mode Code:</span>
+            <span id="forgot-dev-code-value" class="code-value"></span>
+          </div>
+          <div id="forgot-preview-link" class="email-preview hidden">
+            <span>📧 Email sent!</span>
+            <a id="forgot-preview-url" href="#" target="_blank" class="preview-link">View your email →</a>
+          </div>
+        </div>
+
+        <div id="forgot-step-2" class="hidden">
+          <div class="input-group">
+            <label for="reset-code">Reset Code</label>
+            <input type="text" id="reset-code" placeholder="000000" maxlength="6" class="code-input"
+              autocomplete="one-time-code">
+          </div>
+          <div class="input-group">
+            <label for="new-password">New Password</label>
+            <input type="password" id="new-password" placeholder="Min 6 chars, upper+lower+number"
+              autocomplete="new-password">
+          </div>
+          <div class="input-group">
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" placeholder="Confirm new password" autocomplete="new-password">
+          </div>
+          <button id="btn-reset-password" class="btn btn-primary btn-full">Reset Password</button>
+          <div id="reset-error" class="error-msg hidden"></div>
+        </div>
+
+        <div class="verify-actions">
+          <button id="btn-back-from-forgot" class="btn btn-ghost btn-sm">← Back to Sign In</button>
+        </div>
+      </div>
+
+      <button id="btn-guest" class="btn btn-ghost guest-btn">Play as Guest</button>
+    </div>
+  </div>
+
+  <!-- ============ MAIN APP ============ -->
+  <div id="main-app" class="screen">
+    <nav class="top-nav">
+      <div class="nav-brand">
+        <span class="nav-icon">♔</span>
+        <span class="nav-title">Chess Arena</span>
+      </div>
+      <div class="nav-tabs">
+        <button class="nav-tab active" data-tab="play">⚔ Play</button>
+        <button class="nav-tab" data-tab="puzzles">🧩 Puzzles</button>
+        <button class="nav-tab" data-tab="history">📜 Games</button>
+        <button class="nav-tab" data-tab="profile">👤 Profile</button>
+      </div>
+      <div class="nav-user">
+        <span class="verified-badge" id="verified-badge" title="Email verified">✓</span>
+        <span id="nav-username">Guest</span>
+        <button id="btn-logout" class="btn btn-ghost btn-xs">Logout</button>
+      </div>
+    </nav>
+
+    <!-- TAB: PLAY -->
+    <div id="tab-play" class="tab-content active">
+      <div id="lobby-screen" class="sub-screen active">
+        <div class="lobby-container">
+          <div class="lobby-card glass-panel">
+            <h2 class="section-heading">New Game</h2>
+            <div class="time-control-selector">
+              <label>Time Control</label>
+              <div class="time-options">
+                <button class="time-btn" data-time="bullet">
+                  <span class="time-icon">🔥</span><span class="time-label">Bullet</span><span class="time-duration">1
+                    min</span>
+                </button>
+                <button class="time-btn active" data-time="blitz">
+                  <span class="time-icon">⚡</span><span class="time-label">Blitz</span><span class="time-duration">3
+                    min</span>
+                </button>
+                <button class="time-btn" data-time="rapid">
+                  <span class="time-icon">⏱</span><span class="time-label">Rapid</span><span class="time-duration">10
+                    min</span>
+                </button>
+              </div>
+            </div>
+            <div class="lobby-actions">
+              <button id="btn-create" class="btn btn-primary"><span class="btn-icon">⚔</span> Create Game</button>
+              <div class="divider"><span>or join a game</span></div>
+              <div class="join-group">
+                <input type="text" id="room-code-input" placeholder="Room code..." maxlength="6" autocomplete="off">
+                <button id="btn-join" class="btn btn-secondary">Join</button>
+              </div>
+            </div>
+            <div id="lobby-error" class="error-msg hidden"></div>
+          </div>
+          <div class="lobby-features">
+            <div class="feature"><span>🔒</span> Secure accounts</div>
+            <div class="feature"><span>⏱</span> Timed games</div>
+            <div class="feature"><span>💬</span> In-game chat</div>
+            <div class="feature"><span>🔊</span> Sound effects</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="waiting-screen" class="sub-screen">
+        <div class="waiting-container glass-panel">
+          <div class="waiting-icon">♔</div>
+          <h2>Waiting for Opponent</h2>
+          <p>Share this room code:</p>
+          <div class="room-code-display">
+            <span id="display-room-code"></span>
+            <button id="btn-copy-code" class="btn-icon-only" title="Copy code">📋</button>
+          </div>
+          <div id="waiting-time-label" class="waiting-time-label"></div>
+          <div class="waiting-spinner">
+            <div class="spinner"></div>
+          </div>
+          <button id="btn-cancel-wait" class="btn btn-ghost">Cancel</button>
+        </div>
+      </div>
+
+      <div id="game-screen" class="sub-screen">
+        <div class="game-layout">
+          <div class="game-sidebar">
+            <div class="glass-panel sidebar-section">
+              <div class="player-info opponent-info">
+                <div class="player-avatar opponent-avatar">♚</div>
+                <div class="player-details">
+                  <span id="opponent-name" class="player-name">Opponent</span>
+                  <span id="opponent-color" class="player-color"></span>
+                </div>
+                <div id="opponent-turn-indicator" class="turn-dot"></div>
+              </div>
+              <div id="opponent-timer" class="chess-timer">--:--</div>
+              <div id="opponent-captured" class="captured-pieces"></div>
+            </div>
+            <div class="glass-panel sidebar-section board-info">
+              <div id="game-status-bar" class="status-bar"><span id="status-text">White to move</span></div>
+              <div id="room-code-badge" class="room-badge">Room: <span id="game-room-code"></span></div>
+            </div>
+            <div class="glass-panel sidebar-section">
+              <div id="player-captured" class="captured-pieces"></div>
+              <div id="self-timer" class="chess-timer">--:--</div>
+              <div class="player-info self-info">
+                <div class="player-avatar self-avatar">♔</div>
+                <div class="player-details">
+                  <span id="self-name" class="player-name">You</span>
+                  <span id="self-color" class="player-color"></span>
+                </div>
+                <div id="self-turn-indicator" class="turn-dot"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="board-wrapper">
+            <div id="chess-board" class="chess-board"></div>
+            <div id="promotion-modal" class="promotion-modal hidden">
+              <div class="promotion-content glass-panel">
+                <h3>Promote Pawn</h3>
+                <div class="promotion-pieces" id="promotion-pieces"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="game-right-panel">
+            <div class="glass-panel sidebar-section moves-section">
+              <h3 class="section-title">Moves</h3>
+              <div id="move-history" class="move-history"></div>
+            </div>
+            <div class="glass-panel sidebar-section chat-section">
+              <h3 class="section-title">Chat</h3>
+              <div id="chat-messages" class="chat-messages"></div>
+              <div class="chat-input-group">
+                <input type="text" id="chat-input" placeholder="Type a message..." maxlength="200" autocomplete="off">
+                <button id="btn-send-chat" class="btn-icon-only">➤</button>
+              </div>
+            </div>
+            <div class="game-actions">
+              <button id="btn-resign" class="btn btn-danger btn-sm">Resign</button>
+              <button id="btn-offer-draw" class="btn btn-ghost btn-sm">Offer Draw</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: PUZZLES -->
+    <div id="tab-puzzles" class="tab-content">
+      <div class="tab-page">
+        <div class="tab-header">
+          <h2>♟ Chess Puzzles</h2>
+          <p>Sharpen your tactics by solving puzzles</p>
+        </div>
+        <div class="puzzles-container">
+          <div class="glass-panel puzzle-card">
+            <div class="puzzle-board" id="puzzle-board"></div>
+            <div class="puzzle-info">
+              <div class="puzzle-rating"><span class="label">Rating</span><span class="value"
+                  id="puzzle-rating">1200</span></div>
+              <div class="puzzle-theme"><span class="label">Theme</span><span class="value"
+                  id="puzzle-theme">Fork</span></div>
+              <p id="puzzle-instruction" class="puzzle-instruction">Find the best move for White</p>
+              <div id="puzzle-feedback" class="puzzle-feedback hidden"></div>
+              <div class="puzzle-actions">
+                <button id="btn-puzzle-hint" class="btn btn-ghost btn-sm">💡 Hint</button>
+                <button id="btn-puzzle-next" class="btn btn-primary btn-sm">Next Puzzle →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: GAME HISTORY -->
+    <div id="tab-history" class="tab-content">
+      <div class="tab-page">
+        <div class="tab-header">
+          <h2>📜 Game History</h2>
+          <p>Review your past games</p>
+        </div>
+        <div id="history-list" class="history-list">
+          <div class="empty-state glass-panel">
+            <span class="empty-icon">📋</span>
+            <p>No games played yet</p>
+            <p class="text-muted">Your completed games will appear here</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: PROFILE -->
+    <div id="tab-profile" class="tab-content">
+      <div class="tab-page">
+        <div class="tab-header">
+          <h2>👤 Player Profile</h2>
+        </div>
+        <div class="profile-container">
+          <div class="glass-panel profile-card">
+            <div class="profile-avatar-large">♔</div>
+            <h3 id="profile-username">Guest</h3>
+            <p id="profile-email" class="text-muted">Not signed in</p>
+            <div id="profile-verified-badge" class="profile-badge verified hidden">✓ Email Verified</div>
+            <div id="profile-google-badge" class="profile-badge google hidden">🔗 Google Account</div>
+            <div class="profile-stats">
+              <div class="stat-box"><span class="stat-value" id="stat-games">0</span><span
+                  class="stat-label">Games</span></div>
+              <div class="stat-box stat-win"><span class="stat-value" id="stat-wins">0</span><span
+                  class="stat-label">Wins</span></div>
+              <div class="stat-box stat-loss"><span class="stat-value" id="stat-losses">0</span><span
+                  class="stat-label">Losses</span></div>
+              <div class="stat-box stat-draw"><span class="stat-value" id="stat-draws">0</span><span
+                  class="stat-label">Draws</span></div>
+            </div>
+            <div class="win-rate-bar">
+              <label>Win Rate</label>
+              <div class="progress-bar">
+                <div class="progress-fill" id="win-rate-fill" style="width:0%"></div>
+              </div>
+              <span id="win-rate-text" class="text-muted">0%</span>
+            </div>
+          </div>
+
+          <div class="glass-panel security-card">
+            <h3 class="section-title">🔒 Security</h3>
+            <div class="security-items">
+              <div class="security-item">
+                <span>Password</span>
+                <span id="sec-password" class="sec-status">🔐 Hashed (bcrypt)</span>
+              </div>
+              <div class="security-item">
+                <span>Email</span>
+                <span id="sec-email" class="sec-status">Checking...</span>
+              </div>
+              <div class="security-item">
+                <span>Auth method</span>
+                <span id="sec-auth" class="sec-status">Email + Password</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALS (unchanged) -->
+  <div id="gameover-modal" class="modal-overlay hidden">
+    <div class="modal-content glass-panel">
+      <div id="gameover-icon" class="gameover-icon">♔</div>
+      <h2 id="gameover-title">Game Over</h2>
+      <p id="gameover-message"></p>
+      <div class="modal-actions">
+        <button id="btn-rematch" class="btn btn-primary">Rematch</button>
+        <button id="btn-new-game" class="btn btn-secondary">New Game</button>
+      </div>
+      <p id="rematch-status" class="rematch-status hidden"></p>
+    </div>
+  </div>
+  <div id="draw-modal" class="modal-overlay hidden">
+    <div class="modal-content glass-panel">
+      <h2>Draw Offered</h2>
+      <p>Your opponent is offering a draw.</p>
+      <div class="modal-actions">
+        <button id="btn-accept-draw" class="btn btn-primary">Accept</button>
+        <button id="btn-decline-draw" class="btn btn-danger">Decline</button>
+      </div>
+    </div>
+  </div>
+  <div id="resign-modal" class="modal-overlay hidden">
+    <div class="modal-content glass-panel">
+      <h2>Resign Game?</h2>
+      <p>Are you sure? Your opponent will win.</p>
+      <div class="modal-actions">
+        <button id="btn-confirm-resign" class="btn btn-danger">Resign</button>
+        <button id="btn-cancel-resign" class="btn btn-ghost">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
