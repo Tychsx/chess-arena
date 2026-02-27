@@ -1,0 +1,12 @@
+flask==3.1.0
+flask-socketio==5.5.1
+flask-cors==5.0.1
+flask-sqlalchemy==3.1.1
+flask-limiter==3.12
+bcrypt==4.3.0
+google-auth==2.38.0
+requests==2.32.3
+resend==2.7.0
+python-dotenv==1.1.0
+eventlet==0.39.1
+python-chess==1.999
